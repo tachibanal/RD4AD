@@ -230,20 +230,18 @@ class ResNet(nn.Module):
 
         return nn.Sequential(*layers)
 
-    def _forward_impl(self, x: Tensor) -> Tensor:
-        # See note [TorchScript super()]
-        x = self.conv1(x)
-        x = self.bn1(x)
-        x = self.relu(x)
-        x = self.maxpool(x)
+   def _forward_impl(self, x: Tensor) -> Tensor:
+    x = self.conv1(x)
+    x = self.bn1(x)
+    x = self.relu(x)
+    x = self.maxpool(x)
 
-        feature_a = self.layer1(x)
-        feature_b = self.layer2(feature_a)
-        feature_c = self.layer3(feature_b)
-        feature_d = self.layer4(feature_c)
+    feature_a = self.layer1(x)  # 64 channels
+    feature_b = self.layer2(feature_a)  # 128 channels
+    feature_c = self.layer3(feature_b)  # 256 channels
+    feature_d = self.layer4(feature_c)  # 512 channels  # 추가됨
 
-
-        return [feature_a, feature_b, feature_c]
+    return [feature_a, feature_b, feature_c, feature_d]  # 수정됨
 
     def forward(self, x: Tensor) -> Tensor:
         return self._forward_impl(x)
