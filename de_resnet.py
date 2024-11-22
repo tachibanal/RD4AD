@@ -399,7 +399,22 @@ def resnext101_32x8d(pretrained: bool = False, progress: bool = True, **kwargs: 
 
 
 def de_wide_resnet50_2(pretrained: bool = False, progress: bool = True, **kwargs: Any) -> ResNet:
+    r"""Widdef de_wide_resnet50_2(pretrained: bool = False, progress: bool = True, input_channels: int = 2048, **kwargs: Any) -> ResNet:
     r"""Wide ResNet-50-2 model from
+    `"Wide Residual Networks" <https://arxiv.org/pdf/1605.07146.pdf>`_.
+    This version allows for adjustable input channels to match encoder output.
+    """
+    kwargs['width_per_group'] = 64 * 2
+    
+    # ResNet 모델 생성
+    model = _resnet('wide_resnet50_2', Bottleneck, [3, 4, 6, 3],
+                    pretrained, progress, **kwargs)
+    
+    # 디코더의 첫 번째 레이어 채널 크기 수정
+    model.inplanes = input_channels  # input_channels를 기반으로 수정
+    
+    return model
+e ResNet-50-2 model from
     `"Wide Residual Networks" <https://arxiv.org/pdf/1605.07146.pdf>`_.
     The model is the same as ResNet except for the bottleneck number of channels
     which is twice larger in every block. The number of channels in outer 1x1
