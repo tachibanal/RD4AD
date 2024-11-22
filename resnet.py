@@ -574,4 +574,3 @@ def wide_resnet101_2(pretrained: bool = False, progress: bool = True, **kwargs: 
     return _resnet('wide_resnet101_2', Bottleneck, [3, 4, 23, 3],
                    pretrained, progress, **kwargs), BN_layer(AttnBottleneck,3,**kwargs)
 
-
